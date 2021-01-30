@@ -33,19 +33,9 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
-
-    buildFeatures {
-        // Open data binding
-        dataBinding true
-        // Open view binding
-        viewBinding true
-    }
 }
 
 dependencies {
-
-    implementation project(":common")
-
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
@@ -53,12 +43,8 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$appcompat"
     implementation "androidx.core:core-ktx:$ktx"
 
-    // JetPack
-    implementation "androidx.fragment:fragment-ktx:$fragment_ktx"
-
-    // Coroutines
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines"
+    // Util
+    implementation "com.blankj:utilcodex:$androidUtil"
 
     // Test
     testImplementation 'junit:junit:4.13'
