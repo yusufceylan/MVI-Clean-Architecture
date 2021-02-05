@@ -50,6 +50,7 @@ dependencies {
     implementation project(":base")
     implementation project(":common")
     implementation project(":domain")
+    implementation project(":data")
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
