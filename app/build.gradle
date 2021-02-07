@@ -52,6 +52,7 @@ dependencies {
     implementation project(":domain")
     implementation project(":data")
     implementation project(":remote")
+    implementation project(":local")
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"

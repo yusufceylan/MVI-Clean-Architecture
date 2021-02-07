@@ -26,4 +26,5 @@ ext {
     navComponentVersion = "2.3.3"
     materialDialogVersion = "3.3.0"
     javaxInjectVersion = "1"
+    roomVersion = "2.2.6"
 }
