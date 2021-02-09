@@ -1,24 +1,24 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-parcelize'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
-    id "androidx.navigation.safeargs"
 }
+
 
 android {
     compileSdkVersion compileSdk
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.ysfcyln.mvicleanarchitecture"
         minSdkVersion minSdk
         targetSdkVersion targetSdk
-        versionCode generateVersionCode()
-        versionName generateVersionName()
+        versionCode 1
+        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -36,24 +36,13 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
-
-    buildFeatures {
-        // Open data binding
-        dataBinding true
-        // Open view binding
-        viewBinding true
-    }
 }
 
 dependencies {
 
     implementation project(":base")
-    implementation project(":common")
     implementation project(":domain")
-    implementation project(":data")
-    implementation project(":remote")
-    implementation project(":local")
-    implementation project(":presentation")
+    implementation project(":common")
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -61,23 +50,11 @@ dependencies {
     // Core
     implementation "androidx.appcompat:appcompat:$appcompat"
     implementation "androidx.core:core-ktx:$ktx"
-    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout"
-
-    // Material
-    implementation "com.google.android.material:material:$material"
-
-    // Leak Canary
-    // debugImplementation because LeakCanary should only run in debug builds.
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanary"
 
     // JetPack
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_viewmodel"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_livedata_ktx"
     implementation "androidx.fragment:fragment-ktx:$fragment_ktx"
-
-    // Navigation
-    implementation "androidx.navigation:navigation-fragment-ktx:$navComponentVersion"
-    implementation "androidx.navigation:navigation-ui-ktx:$navComponentVersion"
 
     // Hilt dependencies
     implementation "com.google.dagger:hilt-android:$hilt_version"
@@ -87,33 +64,9 @@ dependencies {
     implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hilt_jetpack_version"
     kapt "androidx.hilt:hilt-compiler:$hilt_jetpack_version"
 
-    // Hilt testing dependencies
-    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
-    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
-    kaptAndroidTest "androidx.hilt:hilt-compiler:$hilt_jetpack_version"
-
     // Test
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-}
-
-/**
- * Generates version code that is suitable for the Semantic Versioning
- *
- * @return a version code generated automatically
- */
-private Integer generateVersionCode() {
-    return minSdk * 10000000 + versionMajor * 10000 + versionMinor * 100 + versionPatch
-}
-
-/**
- * Generates version name that is suitable for the Semantic Versioning
- *
- * @return a version name generated automatically
- */
-private String generateVersionName() {
-    String versionName = "${versionMajor}.${versionMinor}.${versionPatch}"
-    return versionName
 }
