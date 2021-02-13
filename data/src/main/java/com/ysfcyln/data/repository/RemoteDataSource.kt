@@ -1,5 +1,6 @@
 package com.ysfcyln.data.repository
 
+import com.ysfcyln.data.model.CommentDataModel
 import com.ysfcyln.data.model.PostDataModel
 
 /**
@@ -8,5 +9,7 @@ import com.ysfcyln.data.model.PostDataModel
 interface RemoteDataSource {
 
     suspend fun getPosts() : List<PostDataModel>
+
+    suspend fun getPostComments(postId : Int) : List<CommentDataModel>
 
 }
