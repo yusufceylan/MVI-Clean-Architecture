@@ -6,5 +6,8 @@ import javax.inject.Inject
 /**
  * Implementation class of [Repository]
  */
-class RepositoryImp @Inject constructor() : Repository {
+class RepositoryImp @Inject constructor(
+    private val localDataSource: LocalDataSource,
+    private val remoteDataSource: RemoteDataSource
+) : Repository {
 }
