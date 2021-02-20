@@ -11,7 +11,7 @@ interface LocalDataSource {
 
     suspend fun getPostItem(id: Int): PostDataModel
 
-    suspend fun addPostItems(posts: List<PostDataModel>)
+    suspend fun addPostItems(posts: List<PostDataModel>) : List<Long>
 
     suspend fun getPostItems(): List<PostDataModel>
 

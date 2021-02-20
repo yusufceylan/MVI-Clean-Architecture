@@ -25,7 +25,7 @@ class LocalDataSourceImp @Inject constructor(
         return postMapper.from(postLocalModel)
     }
 
-    override suspend fun addPostItems(posts: List<PostDataModel>) {
+    override suspend fun addPostItems(posts: List<PostDataModel>) : List<Long> {
         val postLocalList = postMapper.toList(posts)
         return postDAO.addPostItems(posts = postLocalList)
     }

@@ -13,7 +13,7 @@ interface PostDAO {
     suspend fun getPostItem(id: Int): PostLocalModel
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addPostItems(posts: List<PostLocalModel>)
+    suspend fun addPostItems(posts: List<PostLocalModel>) : List<Long>
 
     @Query("SELECT * FROM posts")
     suspend fun getPostItems(): List<PostLocalModel>
