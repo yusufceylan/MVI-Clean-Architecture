@@ -22,7 +22,7 @@ class GetPostCommentsUseCase @Inject constructor(
     override suspend fun buildRequest(params: Int?): Flow<Resource<List<CommentEntityModel>>> {
         if (params == null) {
             return flow {
-                emit(Resource.Error(Exception(message = "PostId can not be null")))
+                emit(Resource.Error(Exception("PostId can not be null")))
             }.flowOn(dispatcher)
         }
         return repository.getPostComments(postId = params).flowOn(dispatcher)
