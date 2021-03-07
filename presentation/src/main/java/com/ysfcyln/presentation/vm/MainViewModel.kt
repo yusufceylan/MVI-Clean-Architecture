@@ -11,6 +11,7 @@ import com.ysfcyln.presentation.contract.MainContract
 import com.ysfcyln.presentation.model.PostUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -46,6 +47,7 @@ class MainViewModel @Inject constructor(
     private fun fetchPosts() {
         viewModelScope.launch {
             postsUseCase.execute(null)
+                .onStart { emit(Resource.Loading) }
                 .collect {
                     when (it) {
                         is Resource.Loading -> {
