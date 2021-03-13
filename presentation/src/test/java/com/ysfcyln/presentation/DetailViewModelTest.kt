@@ -44,7 +44,7 @@ class DetailViewModelTest {
     @Before
     fun setUp() {
         MockKAnnotations.init(this, relaxUnitFun = true) // turn relaxUnitFun on for all mocks
-        // Create MainViewModel before every test
+        // Create DetailViewModel before every test
         detailViewModel = DetailViewModel(
             savedStateHandle = savedStateHandle,
             getPostCommentsUseCase = getPostCommentsUseCase,
