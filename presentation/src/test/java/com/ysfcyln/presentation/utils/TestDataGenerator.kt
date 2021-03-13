@@ -2,6 +2,7 @@ package com.ysfcyln.presentation.utils
 
 import com.ysfcyln.domain.entity.CommentEntityModel
 import com.ysfcyln.domain.entity.PostEntityModel
+import com.ysfcyln.presentation.model.PostUiModel
 
 class TestDataGenerator {
 
@@ -19,6 +20,8 @@ class TestDataGenerator {
             val item3 = CommentEntityModel(1,3, "test name 3", "test mail 3", "test body 3")
             return listOf(item1, item2, item3)
         }
+
+        fun generatePostUiModel() = PostUiModel(userId = 1, id = 1, title = "Test title", body = "Test body")
     }
 
 }

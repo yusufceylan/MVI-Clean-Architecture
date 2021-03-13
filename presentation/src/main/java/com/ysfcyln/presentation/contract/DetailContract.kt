@@ -12,7 +12,7 @@ import com.ysfcyln.presentation.model.PostUiModel
 class DetailContract {
 
     sealed class Event : UiEvent {
-        data class OnFetchPostComments(val post : PostUiModel) : Event()
+        data class OnFetchPostComments(val post : PostUiModel?) : Event()
     }
 
     data class State(
