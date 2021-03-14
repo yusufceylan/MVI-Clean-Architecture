@@ -23,7 +23,7 @@ ext {
     leakCanary = "2.4"
     multidex = "2.0.1"
     androidUtil = "1.29.0"
-    navComponentVersion = "2.3.3"
+    navComponentVersion = "2.3.4"
     materialDialogVersion = "3.3.0"
     javaxInjectVersion = "1"
     roomVersion = "2.2.6"
