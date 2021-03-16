@@ -19,5 +19,11 @@
         android:id="@+id/detailFragment"
         android:name="com.ysfcyln.mvicleanarchitecture.ui.detail.DetailFragment"
         android:label="fragment_detail"
-        tools:layout="@layout/fragment_detail" />
+        tools:layout="@layout/fragment_detail" >
+        <argument
+            android:name="post"
+            app:argType="com.ysfcyln.presentation.model.PostUiModel"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
 </navigation>
