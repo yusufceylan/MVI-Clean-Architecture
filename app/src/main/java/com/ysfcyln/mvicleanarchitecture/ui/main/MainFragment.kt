@@ -10,7 +10,6 @@ import androidx.navigation.fragment.findNavController
 import com.ysfcyln.base.BaseFragment
 import com.ysfcyln.mvicleanarchitecture.databinding.FragmentMainBinding
 import com.ysfcyln.presentation.contract.MainContract
-import com.ysfcyln.presentation.model.PostUiModel
 import com.ysfcyln.presentation.vm.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -22,19 +21,21 @@ import kotlinx.coroutines.flow.collect
 class MainFragment : BaseFragment<FragmentMainBinding>() {
 
     private val viewModel : MainViewModel by viewModels()
+    private val adapter : PostAdapter by lazy {
+        PostAdapter { post ->
+            val action = MainFragmentDirections.actionMainFragmentToDetailFragment().setPost(post)
+            findNavController().navigate(action)
+        }
+    }
 
     override val bindLayout: (LayoutInflater, ViewGroup?, Boolean) -> FragmentMainBinding
         get() = FragmentMainBinding::inflate
 
     override fun prepareView(savedInstanceState: Bundle?) {
+        binding.rvPosts.adapter = adapter
         initObservers()
+        // todo fetch one time
         viewModel.setEvent(MainContract.Event.OnFetchPosts)
-
-        binding.tvSample.setOnClickListener {
-            val dummyPost = PostUiModel(1, 1, "title", "body")
-            val action = MainFragmentDirections.actionMainFragmentToDetailFragment().setPost(dummyPost)
-            findNavController().navigate(action)
-        }
     }
 
     /**
@@ -52,6 +53,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
                     }
                     is MainContract.PostsState.Success -> {
                         val data = state.posts
+                        adapter.submitList(data)
                         Log.d("Ysf", "Success")
                     }
                 }
