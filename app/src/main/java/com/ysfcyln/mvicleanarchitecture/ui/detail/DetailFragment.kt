@@ -22,15 +22,18 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>() {
 
     private val viewModel : DetailViewModel by viewModels()
     private val args : DetailFragmentArgs by navArgs()
+    private val adapter : CommentAdapter by lazy {
+        CommentAdapter()
+    }
 
     override val bindLayout: (LayoutInflater, ViewGroup?, Boolean) -> FragmentDetailBinding
         get() = FragmentDetailBinding::inflate
 
     override fun prepareView(savedInstanceState: Bundle?) {
-        // do something
+        binding.rvComments.adapter = adapter
         initObservers()
-        val id = args.post?.id
-        Log.d("Ysf", id.toString())
+        // Fetch post comments
+        viewModel.setEvent(DetailContract.Event.OnFetchPostComments(post = args.post))
     }
 
     /**
@@ -48,6 +51,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>() {
                     }
                     is DetailContract.CommentsState.Success -> {
                         val data = state.comments
+                        adapter.submitList(data)
                         Log.d("Ysf", "Success")
                     }
                 }
