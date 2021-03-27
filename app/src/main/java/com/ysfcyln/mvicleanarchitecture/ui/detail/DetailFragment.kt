@@ -32,6 +32,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>() {
     override fun prepareView(savedInstanceState: Bundle?) {
         binding.rvComments.adapter = adapter
         initObservers()
+        // todo fetch one time via dagger hilt and savedStateHandle
         // Fetch post comments
         viewModel.setEvent(DetailContract.Event.OnFetchPostComments(post = args.post))
     }
