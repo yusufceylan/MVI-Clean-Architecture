@@ -8,6 +8,7 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
+import dagger.hilt.testing.TestInstallIn
 
 /**
  * Repository binding to use in tests.
@@ -15,7 +16,10 @@ import dagger.hilt.android.scopes.ViewModelScoped
  * Hilt will inject a [FakeRepositoryImp] instead of a [RepositoryImp].
  */
 @Module
-@InstallIn(ViewModelComponent::class)
+@TestInstallIn(
+    components = [ViewModelComponent::class],
+    replaces = [RepositoryModule::class]
+)
 abstract class TestRepositoryModule {
 
     @Binds

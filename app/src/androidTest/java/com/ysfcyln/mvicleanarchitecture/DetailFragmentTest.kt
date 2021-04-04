@@ -24,7 +24,6 @@ import org.junit.Test
 @ExperimentalSerializationApi
 @MediumTest
 @HiltAndroidTest
-@UninstallModules(RepositoryModule::class)
 class DetailFragmentTest {
 
     @get:Rule

@@ -36,7 +36,6 @@ import org.junit.Test
 @ExperimentalSerializationApi
 @MediumTest
 @HiltAndroidTest
-@UninstallModules(RepositoryModule::class)
 class MainFragmentTest {
 
 
