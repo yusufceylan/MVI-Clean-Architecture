@@ -4,30 +4,22 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.RecyclerViewActions
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.filters.MediumTest
 import androidx.test.internal.runner.junit4.statement.UiThreadStatement
 import com.google.common.truth.Truth
-import com.ysfcyln.mvicleanarchitecture.di.RepositoryModule
+import com.schibsted.spain.barista.assertion.BaristaRecyclerViewAssertions.assertRecyclerViewItemCount
+import com.schibsted.spain.barista.interaction.BaristaListInteractions.clickListItem
 import com.ysfcyln.mvicleanarchitecture.ui.main.MainFragment
 import com.ysfcyln.mvicleanarchitecture.ui.main.MainFragmentDirections
-import com.ysfcyln.mvicleanarchitecture.ui.main.PostViewHolder
 import com.ysfcyln.mvicleanarchitecture.utils.TestDataGenerator
 import com.ysfcyln.mvicleanarchitecture.utils.launchFragmentInHiltContainer
 import com.ysfcyln.presentation.model.PostUiModel
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import dagger.hilt.android.testing.UninstallModules
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.serialization.ExperimentalSerializationApi
-import org.hamcrest.core.IsNot.not
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -65,13 +57,11 @@ class MainFragmentTest {
             }
         }
 
+        val expectedItemCount = TestDataGenerator.generatePosts().size
+        assertRecyclerViewItemCount(R.id.rv_posts, expectedItemCount)
+
         // Check RecyclerView Item click
-        onView(withId(R.id.rv_posts)).perform(
-            RecyclerViewActions.actionOnItemAtPosition<PostViewHolder>(
-                0,
-                click()
-            )
-        )
+        clickListItem(R.id.rv_posts, 0)
 
         val entityItem = TestDataGenerator.generatePosts().first()
         val item = PostUiModel(
@@ -108,14 +98,11 @@ class MainFragmentTest {
             }
         }
 
+        val expectedItemCount = TestDataGenerator.generatePosts().size
+        assertRecyclerViewItemCount(R.id.rv_posts, expectedItemCount)
 
         // Check RecyclerView Item click
-        onView(withId(R.id.rv_posts)).perform(
-            RecyclerViewActions.actionOnItemAtPosition<PostViewHolder>(
-                0,
-                click()
-            )
-        )
+        clickListItem(R.id.rv_posts, 0)
 
         // Expected item id that comes from fake repository
         val expectedItemId = TestDataGenerator.generatePosts().first().id

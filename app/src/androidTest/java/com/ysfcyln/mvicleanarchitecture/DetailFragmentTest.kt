@@ -1,11 +1,8 @@
 package com.ysfcyln.mvicleanarchitecture
 
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.filters.MediumTest
-import com.ysfcyln.mvicleanarchitecture.di.RepositoryModule
+import com.schibsted.spain.barista.assertion.BaristaRecyclerViewAssertions.assertRecyclerViewItemCount
+import com.schibsted.spain.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import com.ysfcyln.mvicleanarchitecture.ui.detail.DetailFragment
 import com.ysfcyln.mvicleanarchitecture.ui.detail.DetailFragmentArgs
 import com.ysfcyln.mvicleanarchitecture.utils.TestDataGenerator
@@ -13,7 +10,6 @@ import com.ysfcyln.mvicleanarchitecture.utils.launchFragmentInHiltContainer
 import com.ysfcyln.presentation.model.PostUiModel
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import dagger.hilt.android.testing.UninstallModules
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.serialization.ExperimentalSerializationApi
 import org.junit.Before
@@ -49,6 +45,7 @@ class DetailFragmentTest {
             title = entityItem.title,
             body = entityItem.body
         )
+        val expectedItemCount = TestDataGenerator.generatePostComments().size
 
         // When
         val bundle = DetailFragmentArgs.Builder()
@@ -59,7 +56,8 @@ class DetailFragmentTest {
         val scenario = launchFragmentInHiltContainer<DetailFragment>(fragmentArgs = bundle)
 
         // Then
-        onView(withId(R.id.rv_comments)).check(matches(isDisplayed()))
+        assertDisplayed(R.id.rv_comments)
+        assertRecyclerViewItemCount(R.id.rv_comments, expectedItemCount)
     }
 
 }
