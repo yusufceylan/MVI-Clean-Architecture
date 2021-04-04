@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
@@ -45,14 +46,17 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>() {
             viewModel.uiState.collect {
                 when (val state = it.commentsState) {
                     is DetailContract.CommentsState.Idle -> {
+                        binding.loadingPb.isVisible = false
                         Log.d("Ysf", "Idle")
                     }
                     is DetailContract.CommentsState.Loading -> {
+                        binding.loadingPb.isVisible = true
                         Log.d("Ysf", "Loading")
                     }
                     is DetailContract.CommentsState.Success -> {
                         val data = state.comments
                         adapter.submitList(data)
+                        binding.loadingPb.isVisible = false
                         Log.d("Ysf", "Success")
                     }
                 }

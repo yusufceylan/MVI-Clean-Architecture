@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -46,14 +47,17 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
             viewModel.uiState.collect {
                 when (val state = it.postsState) {
                     is MainContract.PostsState.Idle -> {
+                        binding.loadingPb.isVisible = false
                         Log.d("Ysf", "Idle")
                     }
                     is MainContract.PostsState.Loading -> {
+                        binding.loadingPb.isVisible = true
                         Log.d("Ysf", "Loading")
                     }
                     is MainContract.PostsState.Success -> {
                         val data = state.posts
                         adapter.submitList(data)
+                        binding.loadingPb.isVisible = false
                         Log.d("Ysf", "Success")
                     }
                 }
