@@ -35,8 +35,9 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
     override fun prepareView(savedInstanceState: Bundle?) {
         binding.rvPosts.adapter = adapter
         initObservers()
-        // todo fetch one time
-        viewModel.setEvent(MainContract.Event.OnFetchPosts)
+        // Fetch only once
+        if (viewModel.currentState.postsState is MainContract.PostsState.Idle)
+            viewModel.setEvent(MainContract.Event.OnFetchPosts)
     }
 
     /**
@@ -48,17 +49,14 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
                 when (val state = it.postsState) {
                     is MainContract.PostsState.Idle -> {
                         binding.loadingPb.isVisible = false
-                        Log.d("Ysf", "Idle")
                     }
                     is MainContract.PostsState.Loading -> {
                         binding.loadingPb.isVisible = true
-                        Log.d("Ysf", "Loading")
                     }
                     is MainContract.PostsState.Success -> {
                         val data = state.posts
                         adapter.submitList(data)
                         binding.loadingPb.isVisible = false
-                        Log.d("Ysf", "Success")
                     }
                 }
             }

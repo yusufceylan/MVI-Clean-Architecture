@@ -33,9 +33,9 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>() {
     override fun prepareView(savedInstanceState: Bundle?) {
         binding.rvComments.adapter = adapter
         initObservers()
-        // todo fetch one time via dagger hilt and savedStateHandle
-        // Fetch post comments
-        viewModel.setEvent(DetailContract.Event.OnFetchPostComments(post = args.post))
+        // Fetch post comments only once
+        if (viewModel.currentState.commentsState is DetailContract.CommentsState.Idle)
+            viewModel.setEvent(DetailContract.Event.OnFetchPostComments(post = args.post))
     }
 
     /**
@@ -47,17 +47,14 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>() {
                 when (val state = it.commentsState) {
                     is DetailContract.CommentsState.Idle -> {
                         binding.loadingPb.isVisible = false
-                        Log.d("Ysf", "Idle")
                     }
                     is DetailContract.CommentsState.Loading -> {
                         binding.loadingPb.isVisible = true
-                        Log.d("Ysf", "Loading")
                     }
                     is DetailContract.CommentsState.Success -> {
                         val data = state.comments
                         adapter.submitList(data)
                         binding.loadingPb.isVisible = false
-                        Log.d("Ysf", "Success")
                     }
                 }
             }
