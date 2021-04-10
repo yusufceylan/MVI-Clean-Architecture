@@ -28,7 +28,7 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+        super.onViewCreated(view, savedInstanceState)
         prepareView(savedInstanceState)
     }
 
