@@ -54,21 +54,18 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines"
 
     // Test
-    testImplementation 'junit:junit:4.13.1'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-
+    testImplementation "junit:junit:$junitVersion"
     // testImplementation for pure JVM unit tests
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines"
     // Run Blocking Test
-    testImplementation 'androidx.arch.core:core-testing:2.1.0'
+    testImplementation "androidx.arch.core:core-testing:$coreTestingVersion"
     // Truth
-    testImplementation "com.google.truth:truth:1.1.2"
+    testImplementation "com.google.truth:truth:$truthVersion"
     // For small test - large test annotations
-    testImplementation "androidx.test:runner:1.3.0"
+    testImplementation "androidx.test:runner:$testRunnerVersion"
     // Mock objects
-    testImplementation "io.mockk:mockk:1.10.6"
+    testImplementation "io.mockk:mockk:$mockkVersion"
     // For Flow test
-    testImplementation "app.cash.turbine:turbine:0.4.0"
+    testImplementation "app.cash.turbine:turbine:$turbineVersion"
 
 }

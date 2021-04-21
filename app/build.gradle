@@ -109,28 +109,27 @@ dependencies {
     implementation "androidx.room:room-ktx:$roomVersion"
 
     // Instrumented Unit Tests
-    androidTestImplementation "junit:junit:4.13.1"
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation "junit:junit:$junitVersion"
     androidTestImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines") {
         // conflicts with mockito due to direct inclusion of byte buddy
         exclude group: "org.jetbrains.kotlinx", module: "kotlinx-coroutines-debug"
     }
     // Run Blocking Test
-    androidTestImplementation 'androidx.arch.core:core-testing:2.1.0'
+    androidTestImplementation "androidx.arch.core:core-testing:$coreTestingVersion"
     // Truth
-    androidTestImplementation "com.google.truth:truth:1.1.2"
+    androidTestImplementation "com.google.truth:truth:$truthVersion"
     // For small test - large test annotations
-    androidTestImplementation "androidx.test:runner:1.3.0"
+    androidTestImplementation "androidx.test:runner:$testRunnerVersion"
     // Mock objects
-    androidTestImplementation "io.mockk:mockk-android:1.10.6"
+    androidTestImplementation "io.mockk:mockk-android:$mockkAndroidVersion"
     // Test with Dagger Hilt
     androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
     kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
-    debugImplementation "androidx.fragment:fragment-testing:1.3.2" // Create debug source set
+    debugImplementation "androidx.fragment:fragment-testing:$fragmentTestingVersion" // Create debug source set
     // Navigation Test
     androidTestImplementation "androidx.navigation:navigation-testing:$navComponentVersion"
     // Barista for UI test with Espresso
-    androidTestImplementation('com.schibsted.spain:barista:3.9.0') {
+    androidTestImplementation("com.schibsted.spain:barista:$baristaVersion") {
         exclude group: 'org.jetbrains.kotlin' // Only if you already use Kotlin in your project
     }
 }
