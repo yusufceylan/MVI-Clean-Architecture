@@ -1,12 +1,12 @@
 package com.ysfcyln.mvicleanarchitecture.ui.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.addRepeatingJob
 import androidx.navigation.fragment.findNavController
 import com.ysfcyln.base.BaseFragment
 import com.ysfcyln.mvicleanarchitecture.databinding.FragmentMainBinding
@@ -44,7 +44,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
      * Initialize Observers
      */
     private fun initObservers() {
-        lifecycleScope.launchWhenStarted {
+        viewLifecycleOwner.addRepeatingJob(Lifecycle.State.STARTED) {
             viewModel.uiState.collect {
                 when (val state = it.postsState) {
                     is MainContract.PostsState.Idle -> {
@@ -62,7 +62,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
             }
         }
 
-        lifecycleScope.launchWhenStarted {
+        viewLifecycleOwner.addRepeatingJob(Lifecycle.State.STARTED) {
             viewModel.effect.collect {
                 when (it) {
                     is MainContract.Effect.ShowError -> {

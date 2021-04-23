@@ -1,12 +1,12 @@
 package com.ysfcyln.mvicleanarchitecture.ui.detail
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.addRepeatingJob
 import androidx.navigation.fragment.navArgs
 import com.ysfcyln.base.BaseFragment
 import com.ysfcyln.mvicleanarchitecture.databinding.FragmentDetailBinding
@@ -42,7 +42,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>() {
      * Initialize Observers
      */
     private fun initObservers() {
-        lifecycleScope.launchWhenStarted {
+        viewLifecycleOwner.addRepeatingJob(Lifecycle.State.STARTED) {
             viewModel.uiState.collect {
                 when (val state = it.commentsState) {
                     is DetailContract.CommentsState.Idle -> {
@@ -60,7 +60,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>() {
             }
         }
 
-        lifecycleScope.launchWhenStarted {
+        viewLifecycleOwner.addRepeatingJob(Lifecycle.State.STARTED) {
             viewModel.effect.collect {
                 when (it) {
                     is DetailContract.Effect.ShowError -> {
