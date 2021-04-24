@@ -29,7 +29,7 @@ class LocalDataSourceImpTest {
     @Before
     fun setUp() {
         MockKAnnotations.init(this, relaxUnitFun = true) // turn relaxUnitFun on for all mocks
-        // Create RemoteDataSourceImp before every test
+        // Create LocalDataSourceImp before every test
         localDataSource = LocalDataSourceImp(
             postDAO = postDao,
             postMapper = postLocalDataMapper
