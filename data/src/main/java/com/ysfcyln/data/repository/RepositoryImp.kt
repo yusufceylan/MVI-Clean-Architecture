@@ -43,7 +43,6 @@ class RepositoryImp @Inject constructor(
                 }
             }
         }
-        // todo add onStart and catch for initial data fetch from local
     }
 
     override suspend fun getPostComments(postId: Int): Flow<Resource<List<CommentEntityModel>>> {
