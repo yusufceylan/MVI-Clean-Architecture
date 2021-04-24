@@ -18,7 +18,7 @@ android {
         versionCode generateVersionCode()
         versionName generateVersionName()
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.ysfcyln.mvicleanarchitecture.utils.HiltTestRunner"
     }
 
     buildTypes {
@@ -49,6 +49,11 @@ dependencies {
 
     implementation project(":base")
     implementation project(":common")
+    implementation project(":domain")
+    implementation project(":data")
+    implementation project(":remote")
+    implementation project(":local")
+    implementation project(":presentation")
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -68,6 +73,7 @@ dependencies {
     // JetPack
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_viewmodel"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_livedata_ktx"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_runtime"
     implementation "androidx.fragment:fragment-ktx:$fragment_ktx"
 
     // Navigation
@@ -87,11 +93,46 @@ dependencies {
     kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
     kaptAndroidTest "androidx.hilt:hilt-compiler:$hilt_jetpack_version"
 
-    // Test
-    testImplementation 'junit:junit:4.13'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    // Service Manager
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
 
+    // KotlinX Serialization
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxVersion"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:$kotlinxConverterVersion"
+
+    // Room
+    implementation "androidx.room:room-runtime:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
+    // For Kotlin use kapt instead of annotationProcessor
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation "androidx.room:room-ktx:$roomVersion"
+
+    // Instrumented Unit Tests
+    androidTestImplementation "junit:junit:$junitVersion"
+    androidTestImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines") {
+        // conflicts with mockito due to direct inclusion of byte buddy
+        exclude group: "org.jetbrains.kotlinx", module: "kotlinx-coroutines-debug"
+    }
+    // Run Blocking Test
+    androidTestImplementation "androidx.arch.core:core-testing:$coreTestingVersion"
+    // Truth
+    androidTestImplementation "com.google.truth:truth:$truthVersion"
+    // For small test - large test annotations
+    androidTestImplementation "androidx.test:runner:$testRunnerVersion"
+    // Mock objects
+    androidTestImplementation "io.mockk:mockk-android:$mockkAndroidVersion"
+    // Test with Dagger Hilt
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
+    debugImplementation "androidx.fragment:fragment-testing:$fragmentTestingVersion" // Create debug source set
+    // Navigation Test
+    androidTestImplementation "androidx.navigation:navigation-testing:$navComponentVersion"
+    // Barista for UI test with Espresso
+    androidTestImplementation("com.schibsted.spain:barista:$baristaVersion") {
+        exclude group: 'org.jetbrains.kotlin' // Only if you already use Kotlin in your project
+    }
 }
 
 /**

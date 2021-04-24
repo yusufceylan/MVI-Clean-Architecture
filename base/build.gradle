@@ -53,6 +53,9 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$appcompat"
     implementation "androidx.core:core-ktx:$ktx"
 
+    // RecyclerView
+    implementation "androidx.recyclerview:recyclerview:$recyclerView"
+
     // JetPack
     implementation "androidx.fragment:fragment-ktx:$fragment_ktx"
 
