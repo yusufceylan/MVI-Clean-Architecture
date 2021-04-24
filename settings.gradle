@@ -1,2 +1,9 @@
+include ':presentation'
+include ':local'
+include ':remote'
+include ':data'
+include ':domain'
+include ':common'
+include ':base'
 include ':app'
 rootProject.name = "MviCleanArchitecture"

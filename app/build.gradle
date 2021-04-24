@@ -1,19 +1,24 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-parcelize'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+    id "androidx.navigation.safeargs"
+}
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion compileSdk
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.ysfcyln.mvicleanarchitecture"
-        minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion minSdk
+        targetSdkVersion targetSdk
+        versionCode generateVersionCode()
+        versionName generateVersionName()
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.ysfcyln.mvicleanarchitecture.utils.HiltTestRunner"
     }
 
     buildTypes {
@@ -22,16 +27,129 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
+    buildFeatures {
+        // Open data binding
+        dataBinding true
+        // Open view binding
+        viewBinding true
+    }
 }
 
 dependencies {
+
+    implementation project(":base")
+    implementation project(":common")
+    implementation project(":domain")
+    implementation project(":data")
+    implementation project(":remote")
+    implementation project(":local")
+    implementation project(":presentation")
+
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.3.2'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+    // Core
+    implementation "androidx.appcompat:appcompat:$appcompat"
+    implementation "androidx.core:core-ktx:$ktx"
+    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout"
+
+    // Material
+    implementation "com.google.android.material:material:$material"
+
+    // Leak Canary
+    // debugImplementation because LeakCanary should only run in debug builds.
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanary"
+
+    // JetPack
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_viewmodel"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_livedata_ktx"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_runtime"
+    implementation "androidx.fragment:fragment-ktx:$fragment_ktx"
+
+    // Navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:$navComponentVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$navComponentVersion"
+
+    // Hilt dependencies
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+
+    // Hilt ViewModel extension
+    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hilt_jetpack_version"
+    kapt "androidx.hilt:hilt-compiler:$hilt_jetpack_version"
+
+    // Hilt testing dependencies
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
+    kaptAndroidTest "androidx.hilt:hilt-compiler:$hilt_jetpack_version"
+
+    // Service Manager
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
+
+    // KotlinX Serialization
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxVersion"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:$kotlinxConverterVersion"
+
+    // Room
+    implementation "androidx.room:room-runtime:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
+    // For Kotlin use kapt instead of annotationProcessor
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation "androidx.room:room-ktx:$roomVersion"
+
+    // Instrumented Unit Tests
+    androidTestImplementation "junit:junit:$junitVersion"
+    androidTestImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines") {
+        // conflicts with mockito due to direct inclusion of byte buddy
+        exclude group: "org.jetbrains.kotlinx", module: "kotlinx-coroutines-debug"
+    }
+    // Run Blocking Test
+    androidTestImplementation "androidx.arch.core:core-testing:$coreTestingVersion"
+    // Truth
+    androidTestImplementation "com.google.truth:truth:$truthVersion"
+    // For small test - large test annotations
+    androidTestImplementation "androidx.test:runner:$testRunnerVersion"
+    // Mock objects
+    androidTestImplementation "io.mockk:mockk-android:$mockkAndroidVersion"
+    // Test with Dagger Hilt
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
+    debugImplementation "androidx.fragment:fragment-testing:$fragmentTestingVersion" // Create debug source set
+    // Navigation Test
+    androidTestImplementation "androidx.navigation:navigation-testing:$navComponentVersion"
+    // Barista for UI test with Espresso
+    androidTestImplementation("com.schibsted.spain:barista:$baristaVersion") {
+        exclude group: 'org.jetbrains.kotlin' // Only if you already use Kotlin in your project
+    }
+}
+
+/**
+ * Generates version code that is suitable for the Semantic Versioning
+ *
+ * @return a version code generated automatically
+ */
+private Integer generateVersionCode() {
+    return minSdk * 10000000 + versionMajor * 10000 + versionMinor * 100 + versionPatch
+}
+
+/**
+ * Generates version name that is suitable for the Semantic Versioning
+ *
+ * @return a version name generated automatically
+ */
+private String generateVersionName() {
+    String versionName = "${versionMajor}.${versionMinor}.${versionPatch}"
+    return versionName
 }
