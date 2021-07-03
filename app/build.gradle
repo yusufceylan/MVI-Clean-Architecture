@@ -8,13 +8,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion compileSdk
+    compileSdkVersion rootProject.ext.compileSdk
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.ysfcyln.mvicleanarchitecture"
-        minSdkVersion minSdk
-        targetSdkVersion targetSdk
+        minSdkVersion rootProject.ext.minSdk
+        targetSdkVersion rootProject.ext.targetSdk
         versionCode generateVersionCode()
         versionName generateVersionName()
 

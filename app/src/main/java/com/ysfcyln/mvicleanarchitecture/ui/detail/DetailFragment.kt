@@ -6,7 +6,8 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.addRepeatingJob
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
 import com.ysfcyln.base.BaseFragment
 import com.ysfcyln.mvicleanarchitecture.databinding.FragmentDetailBinding
@@ -14,6 +15,7 @@ import com.ysfcyln.presentation.contract.DetailContract
 import com.ysfcyln.presentation.vm.DetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 /**
  * Detail Fragment
@@ -42,29 +44,33 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>() {
      * Initialize Observers
      */
     private fun initObservers() {
-        viewLifecycleOwner.addRepeatingJob(Lifecycle.State.STARTED) {
-            viewModel.uiState.collect {
-                when (val state = it.commentsState) {
-                    is DetailContract.CommentsState.Idle -> {
-                        binding.loadingPb.isVisible = false
-                    }
-                    is DetailContract.CommentsState.Loading -> {
-                        binding.loadingPb.isVisible = true
-                    }
-                    is DetailContract.CommentsState.Success -> {
-                        val data = state.comments
-                        adapter.submitList(data)
-                        binding.loadingPb.isVisible = false
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect {
+                    when (val state = it.commentsState) {
+                        is DetailContract.CommentsState.Idle -> {
+                            binding.loadingPb.isVisible = false
+                        }
+                        is DetailContract.CommentsState.Loading -> {
+                            binding.loadingPb.isVisible = true
+                        }
+                        is DetailContract.CommentsState.Success -> {
+                            val data = state.comments
+                            adapter.submitList(data)
+                            binding.loadingPb.isVisible = false
+                        }
                     }
                 }
             }
         }
 
-        viewLifecycleOwner.addRepeatingJob(Lifecycle.State.STARTED) {
-            viewModel.effect.collect {
-                when (it) {
-                    is DetailContract.Effect.ShowError -> {
-                        val msg = it.message
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.effect.collect {
+                    when (it) {
+                        is DetailContract.Effect.ShowError -> {
+                            val msg = it.message
+                        }
                     }
                 }
             }

@@ -6,7 +6,8 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.addRepeatingJob
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.ysfcyln.base.BaseFragment
 import com.ysfcyln.mvicleanarchitecture.databinding.FragmentMainBinding
@@ -14,6 +15,7 @@ import com.ysfcyln.presentation.contract.MainContract
 import com.ysfcyln.presentation.vm.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 /**
  * Main Fragment
@@ -44,29 +46,33 @@ class MainFragment : BaseFragment<FragmentMainBinding>() {
      * Initialize Observers
      */
     private fun initObservers() {
-        viewLifecycleOwner.addRepeatingJob(Lifecycle.State.STARTED) {
-            viewModel.uiState.collect {
-                when (val state = it.postsState) {
-                    is MainContract.PostsState.Idle -> {
-                        binding.loadingPb.isVisible = false
-                    }
-                    is MainContract.PostsState.Loading -> {
-                        binding.loadingPb.isVisible = true
-                    }
-                    is MainContract.PostsState.Success -> {
-                        val data = state.posts
-                        adapter.submitList(data)
-                        binding.loadingPb.isVisible = false
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect {
+                    when (val state = it.postsState) {
+                        is MainContract.PostsState.Idle -> {
+                            binding.loadingPb.isVisible = false
+                        }
+                        is MainContract.PostsState.Loading -> {
+                            binding.loadingPb.isVisible = true
+                        }
+                        is MainContract.PostsState.Success -> {
+                            val data = state.posts
+                            adapter.submitList(data)
+                            binding.loadingPb.isVisible = false
+                        }
                     }
                 }
             }
         }
 
-        viewLifecycleOwner.addRepeatingJob(Lifecycle.State.STARTED) {
-            viewModel.effect.collect {
-                when (it) {
-                    is MainContract.Effect.ShowError -> {
-                        val msg = it.message
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.effect.collect {
+                    when (it) {
+                        is MainContract.Effect.ShowError -> {
+                            val msg = it.message
+                        }
                     }
                 }
             }
