@@ -35,7 +35,7 @@ ext {
     testRunnerVersion = "1.3.0"
     mockkVersion = "1.11.0"
     mockkAndroidVersion = "1.11.0"
-    turbineVersion = "0.4.0"
+    turbineVersion = "0.5.2"
     fragmentTestingVersion = "1.3.2"
     baristaVersion = "3.9.0"
 }
